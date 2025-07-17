@@ -1,7 +1,6 @@
 package com.example.carenestapplication.fragments;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -9,16 +8,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.carenestapplication.R;
+import com.example.carenestapplication.utils.UserAuthProvider;
 
 public class DashboardFragment extends Fragment {
+    UserAuthProvider user = UserAuthProvider.getInstance();
 
-    public DashboardFragment() {
-        // Required empty public constructor
-    }
+    public DashboardFragment() {}
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        System.out.println("USER" + user.getCurrentUser().getFirstName());
+
         return inflater.inflate(R.layout.fragment_dashboard, container, false);
     }
 }
+

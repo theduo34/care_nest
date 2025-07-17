@@ -1,20 +1,26 @@
 package com.example.carenestapplication.models;
 
 public class User {
+    private int userId;
     private String firstName;
     private String lastName;
     private String email;
     private String phoneNumber;
     private String password;
 
+    private String createdAt, modifiedAt;
+
     public User() {}
 
-    public User(String firstName, String lastName, String email, String phoneNumber, String password) {
+    public User(int userId, String firstName, String lastName, String email, String phoneNumber, String password, String createdAt, String modifiedAt) {
+        this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.password = password;
+        this.createdAt = createdAt;
+        this.modifiedAt = modifiedAt;
     }
 
     // Getters
@@ -23,6 +29,30 @@ public class User {
     public String getEmail() { return email; }
     public String getPhoneNumber() { return phoneNumber; }
     public String getPassword() { return password; }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public String getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getModifiedAt() {
+        return modifiedAt;
+    }
+
+    public void setModifiedAt(String modifiedAt) {
+        this.modifiedAt = modifiedAt;
+    }
 
     // Setters
     public void setFirstName(String firstName) { this.firstName = firstName; }

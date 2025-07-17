@@ -11,12 +11,17 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.carenestapplication.R;
-import com.example.carenestapplication.fragments.DashboardFragment;
+import com.example.carenestapplication.models.User;
+import com.example.carenestapplication.models.UserProfile;
+import com.example.carenestapplication.services.UserProfileService;
 import com.example.carenestapplication.services.UserService;
 import com.example.carenestapplication.utils.ToastUtils;
+import com.example.carenestapplication.utils.UserAuthProvider;
 
 public class LoginActivity extends AppCompatActivity {
     UserService userService = new UserService(this);
+    UserProfileService userProfileService = new UserProfileService(this);
+
     private EditText inputEmail, inputPassword;
     Button btnLogin;
     TextView goToSignup;
@@ -51,10 +56,17 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            var user = userService.loginUser(email, password);
-            if(user) {
+            var results = userService.loginUser(email, password);
+            if(results) {
+                User loggedInUser = userService.getUserByEmail(email);
+                UserProfile profile = userProfileService.getProfileByUserId(loggedInUser.getUserId());
+
+                UserAuthProvider authProvider = UserAuthProvider.getInstance();
+                authProvider.setCurrentUser(loggedInUser);
+                authProvider.setCurrentUserProfile(profile);
+
                 ToastUtils.success(this, "Login successfully");
-                startActivity(new Intent(this, DashboardFragment.class));
+                startActivity(new Intent(this, HomeActivity.class));
             } else {
                 ToastUtils.error(this, "Invalid email or password");
             }

@@ -50,11 +50,14 @@ public class UserService {
     // Authenticate user
     public boolean loginUser(String email, String password) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query("users",
+        Cursor cursor = db.query(
+                "users",
                 null,
-                email + "=? AND " + "password" + "=?",
+                "email=? AND password=?",
                 new String[]{email, hashPassword(password)},
-                null, null, null);
+                null, null, null
+        );
+
         boolean isValid = cursor.moveToFirst();
         cursor.close();
         db.close();
@@ -80,4 +83,31 @@ public class UserService {
         }
     }
 
+    public User getUserByEmail(String email) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query("users", null, "email=?", new String[]{email},
+                null, null, null);
+
+        User user = null;
+        if (cursor.moveToFirst()) {
+            user = extractUser(cursor);
+        }
+
+        cursor.close();
+        db.close();
+        return user;
+    }
+
+    private User extractUser(Cursor cursor) {
+        User user = new User();
+        user.setUserId(cursor.getInt(cursor.getColumnIndexOrThrow("user_id")));
+        user.setFirstName(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+        user.setLastName(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+        user.setEmail(cursor.getString(cursor.getColumnIndexOrThrow("email")));
+        user.setPhoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
+        user.setPassword(cursor.getString(cursor.getColumnIndexOrThrow("password")));
+        user.setCreatedAt(cursor.getString(cursor.getColumnIndexOrThrow("created_at")));
+        user.setModifiedAt(cursor.getString(cursor.getColumnIndexOrThrow("modified_at")));
+        return user;
+    }
 }
